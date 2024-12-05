@@ -1,67 +1,7 @@
-// interface Video {
-//     id: { videoId: string };
-//     snippet: {
-//         title: string;
-//         description: string;
-//         thumbnails: {
-//             medium: { url: string; width: number; height: number };
-//         };
-//     };
-// }
-
-// // 非同期でYouTubeのチャンネル情報を取得
-// async function fetchYouTubeVideos(channelId: string) {
-//     const apiKey = process.env.YOUTUBE_API_KEY;
-//     const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=5&order=date&type=video&key=${apiKey}`;
-
-//     const res = await fetch(apiUrl);
-//     if (!res.ok) {
-//         throw new Error('Failed to fetch data from YouTube API');
-//     }
-
-//     const data = await res.json();
-//     return data.items as Video[];
-// }
-
-// export default async function Youtube(/*{ searchParams }: { searchParams: { channelId?: string } }*/) {
-//     // searchParamsを非同期に取得する方法
-//     // const { channelId } = searchParams || {};  // 非同期で取得したchannelIdを使用
-//     const resolvedChannelId = 'UC_x5XG1OV2P6uZZ5FSM9Ttw'; // デフォルトのチャンネルID
-//     const videos = await fetchYouTubeVideos(resolvedChannelId);
-
-//     return (
-//         <div>
-
-//             {/* チャンネル動画リスト */}
-//             <ul>
-//                 {videos.map((video) => (
-//                     <li key={video.id.videoId}>
-//                         <h3>{video.snippet.title}</h3>
-//                         <p>{video.snippet.description}</p>
-//                         <img
-//                             src={video.snippet.thumbnails.medium.url}
-//                             alt={video.snippet.title}
-//                             width={video.snippet.thumbnails.medium.width}
-//                             height={video.snippet.thumbnails.medium.height}
-//                         />
-//                         <a
-//                             href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
-//                             target="_blank"
-//                             rel="noopener noreferrer"
-//                         >
-//                             Watch on YouTube
-//                         </a>
-//                     </li>
-//                 ))}
-//             </ul>
-//         </div>
-//     );
-// }
-
-
 'use client';
 
 import { useEffect, useState } from 'react';
+import LoadingSpinner from './../youtube';  // loading.tsxをインポート
 
 interface Video {
     id: { videoId: string };
@@ -95,8 +35,6 @@ async function fetchYouTubeVideos(channelId: string) {
     }
 }
 
-
-
 export default function Youtube() {
     const [videos, setVideos] = useState<Video[]>([]);
     const [loading, setLoading] = useState(true);
@@ -121,7 +59,7 @@ export default function Youtube() {
     
 
     if (loading) {
-        return <p>Loading videos...</p>;
+        return <LoadingSpinner />;  // ローディングスピナーを表示
     }
 
     if (error) {
@@ -154,3 +92,4 @@ export default function Youtube() {
         </div>
     );
 }
+

@@ -1,95 +1,17 @@
-'use client';
+// 子コンポーネント ChannelPageClient.tsx
+import Youtube from '@/app/components/youtube';
+import React from 'react';
 
-import { useEffect, useState } from 'react';
-import LoadingSpinner from './loading';  // loading.tsxをインポート
-
-interface Video {
-    id: { videoId: string };
-    snippet: {
-        title: string;
-        description: string;
-        thumbnails: {
-            medium: { url: string; width: number; height: number };
-        };
-    };
+interface ChannelPageClientProps {
+    name: string;  // 親から渡される props の型
 }
 
-// 非同期でYouTubeのチャンネル情報を取得
-async function fetchYouTubeVideos(channelId: string) {
-    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;  // 環境変数から取得
-    const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=5&order=date&type=video&key=${apiKey}`;
-    console.log('API Key:', apiKey);
-    try {
-        const res = await fetch(apiUrl);
-        if (!res.ok) {
-            const errorData = await res.json();  // エラーレスポンスを取得
-            console.error('YouTube API Error:', errorData);  // 詳細なエラーメッセージを表示
-            throw new Error(`YouTube API Error: ${JSON.stringify(errorData)}`);
-        }
-
-        const data = await res.json();
-        return data.items;
-    } catch (error) {
-        console.error('Failed to fetch YouTube videos:', error);  // エラーメッセージをログに出力
-        throw error;  // エラーを再度スロー
-    }
-}
-
-export default function Youtube() {
-    const [videos, setVideos] = useState<Video[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        async function loadVideos() {
-            try {
-                const resolvedChannelId = 'UC_x5XG1OV2P6uZZ5FSM9Ttw'; // デフォルトのチャンネルID
-                const fetchedVideos = await fetchYouTubeVideos(resolvedChannelId);
-                setVideos(fetchedVideos);
-            } catch (err: any) {
-                console.error('Error loading videos:', err);  // エラーログの表示
-                setError('Failed to load videos.'); // ユーザーにわかりやすいメッセージ
-            } finally {
-                setLoading(false);
-            }
-        }
-    
-        loadVideos();
-    }, []);
-    
-
-    if (loading) {
-        return <LoadingSpinner />;  // ローディングスピナーを表示
-    }
-
-    if (error) {
-        return <p>{error}</p>; // エラーメッセージを表示
-    }
-
+const ChannelPageClient: React.FC<ChannelPageClientProps> = ({ name }) => {
     return (
         <div>
-            <ul>
-                {videos.map((video) => (
-                    <li key={video.id.videoId}>
-                        <h3>{video.snippet.title}</h3>
-                        <p>{video.snippet.description}</p>
-                        <img
-                            src={video.snippet.thumbnails.medium.url}
-                            alt={video.snippet.title}
-                            width={video.snippet.thumbnails.medium.width}
-                            height={video.snippet.thumbnails.medium.height}
-                        />
-                        <a
-                            href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Watch on YouTube
-                        </a>
-                    </li>
-                ))}
-            </ul>
+            <h2>{decodeURIComponent(name)}</h2>
         </div>
     );
 }
 
+export default ChannelPageClient;
