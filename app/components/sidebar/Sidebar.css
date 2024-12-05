@@ -1,0 +1,88 @@
+.navigation {
+    box-sizing: border-box;
+
+    position: relative;
+    width: 70px;
+    background-color: rgb(247, 247, 245);
+    box-shadow: 10px 0 0 rgb(247, 247, 245);
+    border-left: 10px solid rgb(247, 247, 245);
+    overflow-x: hidden;
+    transition: all 0.5s;
+
+    scrollbar-width: none;
+    z-index: 10;
+}
+
+.navigation:hover {
+    width: 250px;
+}
+
+.navigation ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.navigation ul li {
+    list-style: none;
+    display: block;
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 4px;
+}
+
+.navigation ul li:hover {
+    background-color: rgb(227, 227, 224);
+}
+
+.navigation ul li.active {
+    background-color: rgb(216, 216, 201);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.navigation ul li a {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    color: rgb(95, 94, 91);
+    width: 100%;
+    display: flex;
+}
+
+.navigation ul li a .icon {
+    display: block;
+    min-width: 45px;
+    height: 60px;
+    line-height: 90px;
+    text-align: center;
+    padding-left: 10px;
+}
+
+.iconSize {
+    width: 40px;
+    height: 40px;
+}
+
+.navigation ul li a .title {
+    padding-left: 20px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+}
+
+/*====================================*/
+
+.navigation:hover ~ .main-header {
+    filter: brightness(0.8);
+    transition: filter 0.5s ease;
+}
+
+hr {
+    border: 0;  /* ボーダーをリセット */
+    border-top: 1px solid rgb(216, 216, 201);  /* 細い横線 */
+    margin: 20px 0;  /* 上下のマージン */
+}
